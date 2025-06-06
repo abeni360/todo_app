@@ -1,5 +1,7 @@
-Rails.application.routes.draw do
-  root "todos#index"
-  resources :todos
+resources :todos do
+  member do
+    patch :toggle_complete
+  end
 end
+
 

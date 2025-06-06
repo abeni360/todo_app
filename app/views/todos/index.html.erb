@@ -1,16 +1,35 @@
-<p style="color: green"><%= notice %></p>
+<h1>To-Do List</h1>
 
-<% content_for :title, "Todos" %>
+<%= link_to 'New Task', new_todo_path, class: "btn btn-primary mb-3" %>
 
-<h1>Todos</h1>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Due Date</th>
+      <th>Status</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @todos.order(completed: :asc, due_date: :asc).each do |todo| %>
+      <tr>
+        <td><%= todo.title %></td>
+        <td><%= todo.due_date %></td>
+        <td>
+          <% if todo.completed %>
+            ✅ Completed
+          <% else %>
+            ❌ Pending
+          <% end %>
+        </td>
+        <td>
+          <%= link_to 'Edit', edit_todo_path(todo), class: "btn btn-sm btn-outline-secondary" %>
+          <%= link_to 'Delete', todo, method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-sm btn-outline-danger" %>
+          <%= link_to 'Toggle Complete', toggle_complete_todo_path(todo), method: :patch, class: "btn btn-sm btn-outline-success" %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
 
-<div id="todos">
-  <% @todos.each do |todo| %>
-    <%= render todo %>
-    <p>
-      <%= link_to "Show this todo", todo %>
-    </p>
-  <% end %>
-</div>
-
-<%= link_to "New todo", new_todo_path %>
